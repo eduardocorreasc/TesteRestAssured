@@ -1,22 +1,19 @@
-name: CI de Testes com Maven e Allure
+name: CI de Java com Maven
+
 on:
   push:
-    branches:
-      - main
-      - develop
+    branches: [ main, develop ]
   pull_request:
-    branches:
-      - main
-      - develop
-  workflow_dispatch: 
+    branches: [ main, develop ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
-        java-version:
-          - "8"
-  steps:
+        java-version: [ '8' ] 
+    steps:
     - name: Checkout do repositorio
       uses: actions/checkout@v4
       
