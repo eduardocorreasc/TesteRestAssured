@@ -1,0 +1,30 @@
+name: CI de Java com Maven
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        java-version: [ '08', '11', '17' ] 
+
+    steps:
+    - name: Checkout do repositório
+      uses: actions/checkout@v4
+
+    - name: Configurar JDK ${{ matrix.java-version }}
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ matrix.java-version }}
+        distribution: 'temurin' 
+        cache: 'maven' 
+
+    - name: Build e Teste com Maven
+      run: mvn -B package --file pom.xml
