@@ -17,28 +17,28 @@ jobs:
 
   steps:
       
-    name: Checkout do repositório
-    uses: actions/checkout@v4
+    - name: Checkout do repositório
+      uses: actions/checkout@v4
 
       
-name: Configurar JDK ${{ matrix.java-version }}
-uses: actions/setup-java@v4
-with:
+    - name: Configurar JDK ${{ matrix.java-version }}
+      uses: actions/setup-java@v4
+      with:
         java-version: ${{ matrix.java-version }}
         distribution: 'temurin'
         cache: 'maven'
 
-        
-name: Rodar testes com Maven
-run: mvn clean test
+
+    - name: Rodar testes com Maven
+      run: mvn clean test
 
       
-name: Gerar relatório Allure
-run: mvn allure:report
+    - name: Gerar relatório Allure
+      run: mvn allure:report
 
       
-name: Salvar relatório como artefato
-uses: actions/upload-artifact@v3
-with:
-        name: allure-report
-        path: target/site/allure-maven-plugin
+    - name: Salvar relatório como artefato
+      uses: actions/upload-artifact@v3
+      with:
+    - name: allure-report
+      path: target/site/allure-maven-plugin
