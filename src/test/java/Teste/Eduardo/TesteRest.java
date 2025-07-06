@@ -21,7 +21,7 @@ public class TesteRest {
 			.statusCode(200)
 			.body( Matchers.containsString("australian"))
 			.body("message.australian", Matchers.hasSize(2))
-			.body("message.australian", Matchers.hasItems("kelpie", "shepherd1"))
+			.body("message.australian", Matchers.hasItems("kelpie", "shepherd"))
 			.body("status", Matchers.containsString("success"));
 				
 	}
