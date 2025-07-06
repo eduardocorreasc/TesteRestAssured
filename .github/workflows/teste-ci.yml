@@ -16,6 +16,7 @@ jobs:
         java-version: [ '8'] 
 
     steps:
+    
     - name: Checkout do repositório
       uses: actions/checkout@v4
 
@@ -28,3 +29,6 @@ jobs:
 
     - name: Build e Teste com Maven
       run: mvn -B package --file pom.xml
+
+      name: Gerar relatório Allure
+      run: mvn allure:report
