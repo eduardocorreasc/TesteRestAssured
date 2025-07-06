@@ -27,11 +27,8 @@ jobs:
     - name: Rodar testes com Maven
       run: mvn clean test
       
-    - name: Gerar relatorio Allure
-      run: mvn allure:report
-      
-    - name: Salvar relatorio como artefato
+    - name: Salvar relatorios Surefire como artefato
       uses: actions/upload-artifact@v4
-      with: 
-          name: allure-report
-          path: target/site/allure-maven-plugin
+      with:
+        name: surefire-reports
+        path: target/surefire-reports

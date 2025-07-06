@@ -1,69 +1,36 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+name: CI de Java com Maven
 
-  <groupId>com.exemplo</groupId>
-  <artifactId>TesteRestAssured</artifactId>
-  <version>1.0-SNAPSHOT</version>
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <allure.results.directory>target/allure-results</allure.results.directory>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-  </properties>
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>io.qameta.allure</groupId>
-        <artifactId>allure-bom</artifactId>
-        <version>2.24.0</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+    strategy:
+      matrix:
+        java-version: [ '8' ]
 
-  <dependencies>
-    <!-- Framework de testes JUnit 4 -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.12</version>
-      <scope>test</scope>
-    </dependency>
-    
-		<dependency>
-			<groupId>io.rest-assured</groupId>
-			<artifactId>rest-assured</artifactId>
-			<version>4.0.0</version>
-		</dependency>
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
 
-    <!-- Adaptador do Allure para JUnit 4 -->
-    <dependency>
-      <groupId>io.qameta.allure</groupId>
-      <artifactId>allure-junit4</artifactId>
-      <scope>test</scope>
-    </dependency>
-	<dependency>
-		<groupId>org.hamcrest</groupId>
-		<artifactId>hamcrest</artifactId>
-		<version>2.2</version>
-		<scope>test</scope>
-	</dependency>
-  </dependencies>
+      - name: Configurar JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ matrix.java-version }}
+          distribution: temurin
+          cache: maven
 
-  <build>
-    <plugins>
-      <!-- Plugin do Allure para Maven -->
-      <plugin>
-        <groupId>io.qameta.allure</groupId>
-        <artifactId>allure-maven</artifactId>
-        <version>2.11.2</version>
-      </plugin>
-    </plugins>
-  </build>
-</project>
+      - name: Rodar testes com Maven
+        run: mvn clean test
+
+      - name: Salvar relatórios Surefire como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          path: target/surefire-reports
