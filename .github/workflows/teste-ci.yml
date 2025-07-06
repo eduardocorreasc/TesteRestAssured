@@ -1,10 +1,10 @@
-name: CI de Java com Maven
+name: CI de Testes com Maven e Allure
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
   workflow_dispatch:
 
 jobs:
@@ -13,22 +13,32 @@ jobs:
 
     strategy:
       matrix:
-        java-version: [ '8'] 
+        java-version: ['8']
 
-    steps:
-    
-    - name: Checkout do repositório
-      uses: actions/checkout@v4
+  steps:
+      
+    name: Checkout do repositório
+    uses: actions/checkout@v4
 
-    - name: Configurar JDK ${{ matrix.java-version }}
-      uses: actions/setup-java@v4
-      with:
+      
+name: Configurar JDK ${{ matrix.java-version }}
+uses: actions/setup-java@v4
+with:
         java-version: ${{ matrix.java-version }}
-        distribution: 'temurin' 
-        cache: 'maven' 
+        distribution: 'temurin'
+        cache: 'maven'
 
-    - name: Build e Teste com Maven
-      run: mvn -B package --file pom.xml
+        
+name: Rodar testes com Maven
+run: mvn clean test
 
-    - name: Gerar relatório Allure
-      run: mvn allure:report
+      
+name: Gerar relatório Allure
+run: mvn allure:report
+
+      
+name: Salvar relatório como artefato
+uses: actions/upload-artifact@v3
+with:
+        name: allure-report
+        path: target/site/allure-maven-plugin
