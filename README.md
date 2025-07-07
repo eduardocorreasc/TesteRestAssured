@@ -8,6 +8,7 @@ Com estes requisitos você pode pode executar o arquivo TesteRest.java e ver os 
 
 Você também pode Executar na pipeline do GitHub Actions.
 Como funciona:
+  Você precisa solicitar acesso (falar com dudu.109@hotmail.com) para poder rodar a Pipeline.
   A pipeline CI é configurada para rodar automaticamente os testes toda vez que um push for feito na branch principal.
   Para executar manualmente, acesse a aba Actions no seu repositório GitHub.
   Selecione a workflow chamada CI - Java com Maven.
@@ -15,6 +16,6 @@ Como funciona:
   
 O que acontece após a execução:
   Os testes serão executados na infraestrutura do GitHub.
-  Ao final, um relatório detalhado será gerado e disponibilizado como Artifacts da execução.
+  Ao final, um relatório detalhado será gerado e disponibilizado como Artifacts da execução (nome do arquivo: surefire-reports).
   O relatório inclui os testes realizados, resultados (passaram ou falharam) e detalhes dos erros.
 
